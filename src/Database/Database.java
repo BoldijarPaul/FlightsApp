@@ -18,6 +18,7 @@ public class Database {
     public Database() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:" + "mpp.db");
+
     }
 
     public Connection getConnection() {

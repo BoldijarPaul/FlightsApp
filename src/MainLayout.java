@@ -19,24 +19,31 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+
 import Database.Database;
+import rabbit.Send;
+
 public class MainLayout extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
+
     Pane pane;
     FXMLLoader loader;
     Stage primaryStage;
 
     @Override
-    public void start(Stage primaryStage) throws SQLException,ClassNotFoundException, MalformedURLException, IOException {
+    public void start(Stage primaryStage) throws SQLException, ClassNotFoundException, MalformedURLException, IOException {
         try {
+            Send.QUEUE_TO_RECEIVE = "client1";
+            Send.QUEUE_TO_SEND = "client2";
             Database db = new Database();
             FlightRepository frep = new FlightRepository(db.getConnection());
             PersonRepository prep = new PersonRepository(db.getConnection());

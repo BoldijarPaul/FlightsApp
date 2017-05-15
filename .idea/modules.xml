@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Tema1MPP.iml" filepath="$PROJECT_DIR$/.idea/modules/Tema1MPP.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Tema1MPP_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Tema1MPP_main.iml" group="Tema1MPP" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Tema1MPP_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Tema1MPP_test.iml" group="Tema1MPP" />
+      <module fileurl="file://$PROJECT_DIR$/lab orm.iml" filepath="$PROJECT_DIR$/lab orm.iml" />
     </modules>
   </component>
 </project>

@@ -1,6 +1,16 @@
 package Domain;
 
+
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "flights")
 public class Flight {
+
+    public Flight(){
+
+    }
     public int getSeats() {
         return seats;
     }
@@ -49,11 +59,17 @@ public class Flight {
         this.departure_time = departure_time;
     }
 
+    @DatabaseField(id = true, columnName = "id", dataType = DataType.INTEGER)
     int id;
+    @DatabaseField( columnName = "destination", dataType = DataType.STRING)
     String destination;
+    @DatabaseField( columnName = "airport", dataType = DataType.STRING)
     String airport;
+    @DatabaseField( columnName = "departure_date", dataType = DataType.STRING)
     String departure_date;
+    @DatabaseField( columnName = "departure_date", dataType = DataType.STRING)
     String departure_time;
+    @DatabaseField( columnName = "seats", dataType = DataType.INTEGER)
     int seats;
 
     public Flight(int id, String destination, String departure_date, String departure_time, String airport, int seats) {

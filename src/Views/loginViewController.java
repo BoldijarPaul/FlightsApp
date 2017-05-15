@@ -28,6 +28,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import Domain.Flight;
+import rabbit.Recv;
+import rabbit.Send;
 
 import java.util.*;
 
@@ -36,7 +38,9 @@ import java.sql.SQLException;
 /**
  * Created by Cosmin on 3/28/2017.
  */
-public class loginViewController implements ClientListener {
+public class loginViewController {
+
+
     @FXML
     private TextField loginTextField;
     @FXML
@@ -61,8 +65,6 @@ public class loginViewController implements ClientListener {
     private Button getflightsButton;
     @FXML
     private ListView<Flight> flightsList;
-
-    private Client client = new Client(this);
 
     FlightService fservice;
     PersonService pservice;
@@ -115,7 +117,12 @@ public class loginViewController implements ClientListener {
             return;
         } else {
             String loginCode = loginTextField.getText();
-            client.tryToLogin(loginCode);
+            setDisableItems(false);
+            loginViewController.this.loggedin = true;
+            showMessage(Alert.AlertType.CONFIRMATION, "Login !", "You have been logged in!");
+            loginButton.setText("Logout");
+            loginTextField.setDisable(true);
+            flightsList.setItems(loginViewController.this.fmodel);
         }
     }
 
@@ -159,6 +166,7 @@ public class loginViewController implements ClientListener {
         fservice.buyTickets(destination, tickets);
         getflightsButtonAction();
         clearBuyTicketsFields();
+        Send.notifyChange();
         showMessage(Alert.AlertType.CONFIRMATION, "Succes !", "Tickets bought");
     }
 
@@ -182,6 +190,16 @@ public class loginViewController implements ClientListener {
 
     public loginViewController() {
         //flightsList.setItems(fmodel);
+        Recv.init(message -> {
+            System.out.println("Need to refresh flights!");
+            Platform.runLater(() -> {
+                try {
+                    getflightsButtonAction();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
     }
 
     static void showMessage(Alert.AlertType type, String header, String text) {
@@ -192,24 +210,4 @@ public class loginViewController implements ClientListener {
         message.showAndWait();
     }
 
-    public void onLoginResult(final boolean canLogIn) {
-        Platform.runLater(new Runnable() {
-            public void run() {
-                if (canLogIn) {
-                    setDisableItems(false);
-                    loginViewController.this.loggedin = true;
-                    showMessage(Alert.AlertType.CONFIRMATION, "Login !", "You have been logged in!");
-                    loginButton.setText("Logout");
-                    loginTextField.setDisable(true);
-                    flightsList.setItems(loginViewController.this.fmodel);
-                } else {
-                    showMessage(Alert.AlertType.ERROR, "Login !", "Wrong password. Are you trying to hack us ?");
-                }
-            }
-        });
-    }
-
-    public void onLoginError() {
-        showMessage(Alert.AlertType.ERROR, "Erorrrr !", "Some issues with the sockets pff");
-    }
 }
